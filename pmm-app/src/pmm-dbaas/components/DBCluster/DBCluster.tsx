@@ -1,5 +1,6 @@
 import React, { FC, useCallback, useMemo, useState } from 'react';
 import { Button, useStyles } from '@grafana/ui';
+import { useStyles } from '@grafana/ui';
 import { Table } from 'shared/components/Elements/Table/Table';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
 import { AddClusterButton } from '../AddClusterButton/AddClusterButton';
@@ -14,9 +15,9 @@ import {
   databaseTypeRender,
   parametersRender,
   clusterNameRender,
+  clusterActionsRender,
 } from './ColumnRenderers/ColumnRenderers';
 import { DeleteDBClusterModal } from './DeleteDBClusterModal/DeleteDBClusterModal';
-import { isClusterChanging } from './DBCluster.utils';
 
 export const DBCluster: FC<DBClusterProps> = ({ kubernetes }) => {
   const styles = useStyles(getStyles);
@@ -50,40 +51,15 @@ export const DBCluster: FC<DBClusterProps> = ({ kubernetes }) => {
       },
       {
         Header: Messages.dbcluster.table.actionsColumn,
-        accessor: (element) => (
-          <div className={styles.actionsColumn}>
-            <Button
-              size="md"
-              onClick={() => {
-                setSelectedCluster(element);
-                setDeleteModalVisible(true);
-              }}
-              icon="trash-alt"
-              variant="destructive"
-              data-qa="open-delete-modal-button"
-              disabled={isClusterChanging(element)}
-            >
-              {Messages.dbcluster.table.actions.deleteCluster}
-            </Button>
-            <Button
-              size="md"
-              onClick={() => {
-                setSelectedCluster(element);
-                setEditModalVisible(true);
-              }}
-              icon="edit"
-              variant="primary"
-              data-qa="open-edit-modal-button"
-              disabled={isClusterChanging(element)}
-              className={styles.actionButton}
-            >
-              {Messages.dbcluster.table.actions.editCluster}
-            </Button>
-          </div>
-        ),
+        accessor: clusterActionsRender({
+          setSelectedCluster,
+          setDeleteModalVisible,
+          setEditModalVisible,
+          getDBClusters,
+        }),
       },
     ],
-    [],
+    [setSelectedCluster, setDeleteModalVisible, getDBClusters],
   );
 
   const kubernetesOptions = kubernetes.map(({ kubernetesClusterName }) => ({
