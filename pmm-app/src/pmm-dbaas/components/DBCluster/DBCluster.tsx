@@ -1,5 +1,6 @@
-import React, { FC, useCallback, useMemo, useState } from 'react';
-import { Button, useStyles } from '@grafana/ui';
+import React, {
+  FC, useCallback, useMemo, useState,
+} from 'react';
 import { useStyles } from '@grafana/ui';
 import { Table } from 'shared/components/Elements/Table/Table';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
@@ -10,12 +11,12 @@ import { AddDBClusterModal } from './AddDBClusterModal/AddDBClusterModal';
 import { EditDBClusterModal } from './EditDBClusterModal/EditDBClusterModal';
 import { useDBClusters } from './DBCluster.hooks';
 import {
+  clusterActionsRender,
+  clusterNameRender,
   clusterStatusRender,
   connectionRender,
   databaseTypeRender,
   parametersRender,
-  clusterNameRender,
-  clusterActionsRender,
 } from './ColumnRenderers/ColumnRenderers';
 import { DeleteDBClusterModal } from './DeleteDBClusterModal/DeleteDBClusterModal';
 

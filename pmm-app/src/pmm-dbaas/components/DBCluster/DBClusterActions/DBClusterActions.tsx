@@ -11,30 +11,41 @@ export const DBClusterActions: FC<DBClusterActionsProps> = ({
   dbCluster,
   setSelectedCluster,
   setDeleteModalVisible,
+  setEditModalVisible,
   getDBClusters,
 }) => {
-  const getActions = useCallback((dbCluster: DBCluster) => [
-    {
-      title: Messages.dbcluster.table.actions.deleteCluster,
-      action: () => {
-        setSelectedCluster(dbCluster);
-        setDeleteModalVisible(true);
+  const getActions = useCallback(
+    (dbCluster: DBCluster) => [
+      {
+        title: Messages.dbcluster.table.actions.deleteCluster,
+        action: () => {
+          setSelectedCluster(dbCluster);
+          setDeleteModalVisible(true);
+        },
       },
-    },
-    {
-      title: Messages.dbcluster.table.actions.restartCluster,
-      action: async () => {
-        try {
-          const dbClusterService = DBClusterServiceFactory.newDBClusterService(dbCluster.databaseType);
+      {
+        title: Messages.dbcluster.table.actions.restartCluster,
+        action: async () => {
+          try {
+            const dbClusterService = DBClusterServiceFactory.newDBClusterService(dbCluster.databaseType);
 
-          await dbClusterService.restartDBCluster(dbCluster);
-          getDBClusters();
-        } catch (e) {
-          console.error(e);
-        }
+            await dbClusterService.restartDBCluster(dbCluster);
+            getDBClusters();
+          } catch (e) {
+            console.error(e);
+          }
+        },
       },
-    },
-  ], [setSelectedCluster, setDeleteModalVisible, getDBClusters]);
+      {
+        title: Messages.dbcluster.table.actions.editCluster,
+        action: async () => {
+          setSelectedCluster(dbCluster);
+          setEditModalVisible(true);
+        },
+      },
+    ],
+    [setSelectedCluster, setDeleteModalVisible, setEditModalVisible, getDBClusters],
+  );
 
   return (
     <div className={styles.actionsColumn}>

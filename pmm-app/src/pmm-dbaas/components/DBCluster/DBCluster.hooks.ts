@@ -6,14 +6,9 @@ import { DBCluster, GetDBClustersAction, DBClusterPayload } from './DBCluster.ty
 import { DBClusterServiceFactory } from './DBClusterService.factory';
 
 const RECHECK_INTERVAL = 10000;
-const DATABASES = [
-  Databases.mysql,
-  Databases.mongodb,
-];
+const DATABASES = [Databases.mysql, Databases.mongodb];
 
-export const useDBClusters = (
-  kubernetes: Kubernetes[],
-): [DBCluster[], GetDBClustersAction, boolean] => {
+export const useDBClusters = (kubernetes: Kubernetes[]): [DBCluster[], GetDBClustersAction, boolean] => {
   const [dbClusters, setDBClusters] = useState<DBCluster[]>([]);
   const [loading, setLoading] = useState(false);
   let timer: NodeJS.Timeout;
